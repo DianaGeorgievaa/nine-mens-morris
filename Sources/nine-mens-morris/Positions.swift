@@ -1,7 +1,7 @@
 class Positions {
-    private var namesOfPositions: [String: Position]
+     var namesOfPositions: [String: Position]
 
-    init(){
+     init(){
             namesOfPositions = [String: Position]()
 
             namesOfPositions["A1"] = Position(coordinate: Coordinate(row: 1, column: "A"))
@@ -28,5 +28,9 @@ class Positions {
             namesOfPositions["D5"] = Position(coordinate: Coordinate(row: 5, column: "D"))
             namesOfPositions["E4"] = Position(coordinate: Coordinate(row: 4, column: "E"))
             namesOfPositions["E5"] = Position(coordinate: Coordinate(row: 5, column: "E"))
-    }
+     }
+
+     func getPositions() -> [String: Position] {
+         return namesOfPositions
+     }
 }

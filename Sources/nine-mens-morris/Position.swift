@@ -1,4 +1,4 @@
-class Position {
+class Position : Equatable, Hashable {
     private var coordinate: Coordinate
     private var tokenColor: TokenColor?
     private var neighboursCoordinates: [Coordinate]
@@ -7,4 +7,5 @@ class Position {
         self.coordinate = coordinate
         self.neighboursCoordinates = [Coordinate]()
     }
+
 }

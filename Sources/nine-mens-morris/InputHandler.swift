@@ -4,7 +4,7 @@ class InputHandler {
        var isValidName = false
         while isValidName {
            print("Enter your name: ")
-            playerName = readLine()
+            playerName = readLine()!
             if(playerName.count <= 1){
                 print("Please enter valid name")
             } else {
@@ -19,7 +19,7 @@ class InputHandler {
        var isValidPosition = false
         while isValidPosition {
            print("Choose move position: ")
-            position = readLine()
+            position = readLine()!
                 // TODO validate position
                 print("Please enter valid position")
                 isValidPosition=true
@@ -32,7 +32,7 @@ class InputHandler {
        var isValidPosition = false
         while isValidPosition {
            print("Choose opponent's token to remove: ")
-            position = readLine()
+            position = readLine()!
                 // TODO validate position
                 print("Please enter valid position")
                 isValidPosition=true
