@@ -1,4 +1,5 @@
 enum TokenColor{
-    case white
+    case white 
     case black
+    case empty
 }

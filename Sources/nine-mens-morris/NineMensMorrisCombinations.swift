@@ -30,4 +30,8 @@ struct NineMensMorrisCombinations {
             combinations[namesOfPositions["E4"]!] = [[namesOfPositions["F4"]!, namesOfPositions["G4"]!], [namesOfPositions["E3"]!, namesOfPositions["E5"]!]]
             combinations[namesOfPositions["E5"]!] = [[namesOfPositions["D5"]!, namesOfPositions["C5"]!], [namesOfPositions["E3"]!, namesOfPositions["E4"]!]]
     }
+
+    func getCombinations() ->  [Position: [[Position]]] {
+      return combinations
+    }
 }

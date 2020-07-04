@@ -15,29 +15,15 @@ class InputHandler {
     }
 
     func readMovePosition() -> String {
-       var position = ""
-       var isValidPosition = false
-        while isValidPosition {
-           print("Choose move position: ")
-            position = readLine()!
-                // TODO validate position
-                print("Please enter valid position")
-                isValidPosition=true
-            }
-             return position
+            print("Choose move position: ")
+            let position = readLine()!
+            return position
         }
 
      func readRemovePosition() -> String {
-      var position = ""
-       var isValidPosition = false
-        while isValidPosition {
            print("Choose opponent's token to remove: ")
-            position = readLine()!
-                // TODO validate position
-                print("Please enter valid position")
-                isValidPosition=true
-            }
-             return position
+           let position = readLine()!
+            return position
         }
 
 }
