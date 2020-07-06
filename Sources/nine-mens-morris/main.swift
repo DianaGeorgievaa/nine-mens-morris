@@ -1,1 +1,2 @@
-print("Hello, world!")
+let game = Game()
+game.playGame()

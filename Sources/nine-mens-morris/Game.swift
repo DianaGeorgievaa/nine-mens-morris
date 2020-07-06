@@ -5,6 +5,7 @@ class Game {
     private var secondPlayer: Player
     private var inputhHandler: InputHandler
     private var currentPlayer: Player
+    private var positionNeighbours: [Position: [Position]]
     
     init(){
         self.inputhHandler = InputHandler()
@@ -18,6 +19,8 @@ class Game {
         self.secondPlayer = Player(name: secondPlayerName, tokenColor: TokenColor.black)
         print("Created second player - \(secondPlayerName)")
         currentPlayer = firstPlayer
+        let neighbours = PositionNeighbours()
+        self.positionNeighbours = neighbours.getNeighbours()
     }
     
     func putToken() -> Position {
@@ -27,17 +30,12 @@ class Game {
         }
         let chosenPosition = board.getPosition(positionName: position)
         chosenPosition?.setTokenColor(tokenColor: currentPlayer.getToken())
-        board.updatePosition(position: chosenPosition!)
+        board.updatePositionTokenColor(position: chosenPosition!)
         board.printBoard()
-        if currentPlayer == firstPlayer {
-            firstPlayer.updatePlayedTokens()
-        } else {
-            secondPlayer.updatePlayedTokens()
-        }
         
         return chosenPosition!
     }
-    //todo update current player
+    
     func isValidPutOnBoardPosition(position: String) -> Bool {
         return isExistingPosition(position: position) && isEmptyPosition(position: position)
     }
@@ -73,21 +71,24 @@ class Game {
         return isExistingPosition(position: position) && isOccupiedByCurrentPlayer(position: position)
     }
     
-    func play() {
-        let currentPosition = putToken()
-        if checkForNineMensMorrisCombination(position: currentPosition) {
+    func play(position: Position) {
+        if checkForNineMensMorrisCombination(position: position) {
+            var opponent: Player
             if currentPlayer == firstPlayer {
                 firstPlayer.updatePoints()
+                opponent = secondPlayer
             } else {
                 secondPlayer.updatePoints()
+                opponent = firstPlayer
             }
             var position = inputhHandler.readRemovePosition(playerName: currentPlayer.getName())
             while isValidRemovePosition(position: position) {
                 position = inputhHandler.readRemovePosition(playerName: currentPlayer.getName())
             }
+            opponent.decresePlayedTokens()
             let chosenPosition = board.getPosition(positionName: position)
             chosenPosition?.setTokenColor(tokenColor: TokenColor.empty)
-            board.updatePosition(position: chosenPosition!)
+            board.updatePositionTokenColor(position: chosenPosition!)
             board.printBoard()
         }
         if currentPlayer == firstPlayer {
@@ -151,11 +152,66 @@ class Game {
         return true
     }
     
-    func moveTokenOnBoard(from: Position, to: Position) {
-        var position = inputhHandler.readMovePosition(playerName: currentPlayer.getName())
-        while isValidMoveOnBoardPosition(position: position.fromPosition) {
-            position = inputhHandler.readMovePosition(playerName: currentPlayer.getName())
+    func areNeighbourPosition(from: Position, to: Position) -> Bool {
+        let neighbours = positionNeighbours[from]!
+        for neighbour in neighbours {
+            if neighbour == to {
+                return true
+            }
         }
-        //TODO
+        print("Please, choose valid neighbour position")
+        return false
+    }
+    
+    func moveTokenOnBoard() -> Position {
+        var positions = inputhHandler.readMovePosition(playerName: currentPlayer.getName())
+        if board.getNumberOfPlayerTokensOnBoard(player: currentPlayer) == 3 {
+            while isValidMoveOnBoardPosition(position: positions.fromPosition) && isValidPutOnBoardPosition(position: positions.toPosition) {
+                positions = inputhHandler.readMovePosition(playerName: currentPlayer.getName())
+            }
+            
+            let fromPosition = board.getPosition(positionName: positions.fromPosition)
+            fromPosition?.setTokenColor(tokenColor: TokenColor.empty)
+            
+            let toPosition = board.getPosition(positionName: positions.toPosition)
+            toPosition?.setTokenColor(tokenColor: currentPlayer.getToken())
+            
+            board.updatePositionTokenColor(position: fromPosition!)
+            board.updatePositionTokenColor(position: toPosition!)
+            board.printBoard()
+        } else {
+            let fromPosition = board.getPosition(positionName: positions.fromPosition)
+            let toPosition = board.getPosition(positionName: positions.toPosition)
+            while isValidMoveOnBoardPosition(position: positions.fromPosition) && areNeighbourPosition(from: fromPosition!, to: toPosition!) {
+                positions = inputhHandler.readMovePosition(playerName: currentPlayer.getName())
+            }
+        }
+        if currentPlayer == firstPlayer {
+            firstPlayer.increasePlayedTokens()
+        } else {
+            secondPlayer.increasePlayedTokens()
+        }
+        
+        return board.getPosition(positionName: positions.toPosition)!
+    }
+    
+    func playGame() {
+        board.printBoard()
+        while firstPlayer.getPlayedTokens() < 9 && secondPlayer.getPlayedTokens() < 9 {
+            let currentPosition = putToken()
+            play(position: currentPosition)
+        }
+        while firstPlayer.getPlayedTokens() >= 3 && secondPlayer.getPlayedTokens() >= 3 {
+           let currentPosition = moveTokenOnBoard()
+            play(position: currentPosition)
+        }
+        printGameResult()
+    }
+    
+    func printGameResult() {
+        print("END GAME")
+        print("Result: ")
+        firstPlayer.printPlayerDetails()
+        secondPlayer.printPlayerDetails()
     }
 }

@@ -35,8 +35,12 @@ class Player{
         self.points+=1
     }
     
-    func updatePlayedTokens() {
+    func increasePlayedTokens() {
         self.playedTokens+=1
+    }
+    
+    func decresePlayedTokens() {
+        self.playedTokens-=1
     }
     
     static func == (lhs: Player, rhs: Player) -> Bool {

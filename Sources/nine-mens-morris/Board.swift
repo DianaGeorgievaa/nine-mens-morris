@@ -19,7 +19,7 @@ class Board {
         return nil
     }
     
-    func updatePosition(position: Position){
+    func updatePositionTokenColor(position: Position){
         let positionIndex = currentGamePositions.firstIndex(of: position)!
         currentGamePositions[positionIndex].setTokenColor(tokenColor: position.getTokenColor())
     }
@@ -42,6 +42,17 @@ class Board {
         
     }
     
+    func getNumberOfPlayerTokensOnBoard(player: Player) -> Int {
+        var numberOfTokens = 0
+        for position in currentGamePositions {
+            if position.getTokenColor() == player.getToken() {
+                numberOfTokens += 1
+            }
+        }
+        
+        return numberOfTokens
+    }
+    
     func printBoard() {
         print("   A   B   C   D   E   F   G\n")
         print("1  \(getTokenSymbol(position: "A1"))-----------\(getTokenSymbol(position: "D1"))-----------\(getTokenSymbol(position: "G1"))")
@@ -59,3 +70,4 @@ class Board {
         print("7  \(getTokenSymbol(position: "A7"))-----------\(getTokenSymbol(position: "D7"))-----------\(getTokenSymbol(position: "G7"))")
     }
 }
+
