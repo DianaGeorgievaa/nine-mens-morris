@@ -1,14 +1,14 @@
 class InputHandler {
     func readPlayerName() -> String {
         var playerName = ""
-        var isValidName = false
+        var isValidName = true
         while isValidName {
             print("Enter your name: ")
             playerName = readLine()!
             if(playerName.count <= 1){
                 print("Please enter valid name")
             } else {
-                isValidName=true
+                isValidName=false
             }
         }
         return playerName

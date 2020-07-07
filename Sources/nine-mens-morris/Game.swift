@@ -12,10 +12,12 @@ class Game {
         self.board = Board()
         let nineMensMorrisCombinations = NineMensMorrisCombinations()
         self.combinations = nineMensMorrisCombinations.getCombinations()
+        print("Creating first player")
         let firstPlayerName = inputhHandler.readPlayerName()
-        let secondPlayerName = inputhHandler.readPlayerName()
         self.firstPlayer = Player(name: firstPlayerName, tokenColor: TokenColor.white)
         print("Created first player - \(firstPlayerName)")
+        print("Creating second player")
+        let secondPlayerName = inputhHandler.readPlayerName()
         self.secondPlayer = Player(name: secondPlayerName, tokenColor: TokenColor.black)
         print("Created second player - \(secondPlayerName)")
         currentPlayer = firstPlayer
@@ -25,13 +27,19 @@ class Game {
     
     func putToken() -> Position {
         var position = inputhHandler.readPutPosition(playerName: currentPlayer.getName())
-        while isValidPutOnBoardPosition(position: position) {
+        while !isValidPutOnBoardPosition(position: position) {
             position = inputhHandler.readPutPosition(playerName: currentPlayer.getName())
         }
         let chosenPosition = board.getPosition(positionName: position)
         chosenPosition?.setTokenColor(tokenColor: currentPlayer.getToken())
         board.updatePositionTokenColor(position: chosenPosition!)
         board.printBoard()
+        
+        if currentPlayer == firstPlayer {
+            firstPlayer.increasePlayedTokens()
+        } else {
+            secondPlayer.increasePlayedTokens()
+        }
         
         return chosenPosition!
     }
@@ -82,7 +90,7 @@ class Game {
                 opponent = firstPlayer
             }
             var position = inputhHandler.readRemovePosition(playerName: currentPlayer.getName())
-            while isValidRemovePosition(position: position) {
+            while !isValidRemovePosition(position: position) {
                 position = inputhHandler.readRemovePosition(playerName: currentPlayer.getName())
             }
             opponent.decresePlayedTokens()
@@ -104,11 +112,11 @@ class Game {
             print("Please, choose valid position")
             return false
         }
-        if chosenPosition?.getTokenColor() != TokenColor.empty && chosenPosition?.getTokenColor() != currentPlayer.getToken() {
+        if chosenPosition?.getTokenColor() == TokenColor.empty || chosenPosition?.getTokenColor() == currentPlayer.getToken() {
             print("Please, choose valid opponent position")
             return false
         }
-        if checkForNineMensMorrisCombination(position: chosenPosition!) && areAllOpponentPositionsInCombination() {
+        if checkForNineMensMorrisCombination(position: chosenPosition!) && !areAllOpponentPositionsInCombination() {
             print("Please, choose opponent position which is not in nine mens morris combination")
             return false
         }
@@ -132,19 +140,19 @@ class Game {
         let neighbours = combinations[position]
         var isNineMensMorrisCombination = false
         for currentNeighbours in neighbours! {
-            isNineMensMorrisCombination = checkCombination(positions: currentNeighbours)
-            if isNineMensMorrisCombination == true {
+            isNineMensMorrisCombination = checkCombination(position: position, positions: currentNeighbours)
+            if isNineMensMorrisCombination {
                 return true
             }
         }
         return isNineMensMorrisCombination
     }
     
-    func checkCombination(positions: [Position]) -> Bool {
-        for position in positions {
-            let positionIndex = board.getPositions().firstIndex(of: position)!
-            let currentPosition = board.getPositions()[positionIndex]
-            if currentPosition.getTokenColor() != position.getTokenColor() {
+    func checkCombination(position: Position, positions: [Position]) -> Bool {
+        for currentPosition in positions {
+            let positionIndex = board.getPositions().firstIndex(of: currentPosition)!
+            let boardPosition = board.getPositions()[positionIndex]
+            if boardPosition.getTokenColor() != position.getTokenColor() {
                 return false
             }
         }
@@ -166,7 +174,7 @@ class Game {
     func moveTokenOnBoard() -> Position {
         var positions = inputhHandler.readMovePosition(playerName: currentPlayer.getName())
         if board.getNumberOfPlayerTokensOnBoard(player: currentPlayer) == 3 {
-            while isValidMoveOnBoardPosition(position: positions.fromPosition) && isValidPutOnBoardPosition(position: positions.toPosition) {
+            while !isValidMoveOnBoardPosition(position: positions.fromPosition) || !isValidPutOnBoardPosition(position: positions.toPosition) {
                 positions = inputhHandler.readMovePosition(playerName: currentPlayer.getName())
             }
             
@@ -180,16 +188,20 @@ class Game {
             board.updatePositionTokenColor(position: toPosition!)
             board.printBoard()
         } else {
-            let fromPosition = board.getPosition(positionName: positions.fromPosition)
-            let toPosition = board.getPosition(positionName: positions.toPosition)
-            while isValidMoveOnBoardPosition(position: positions.fromPosition) && areNeighbourPosition(from: fromPosition!, to: toPosition!) {
+            var fromPosition = board.getPosition(positionName: positions.fromPosition)
+            var toPosition = board.getPosition(positionName: positions.toPosition)
+            while !isValidMoveOnBoardPosition(position: positions.fromPosition) ||
+                  !areNeighbourPosition(from: fromPosition!, to: toPosition!) {
                 positions = inputhHandler.readMovePosition(playerName: currentPlayer.getName())
+                fromPosition = board.getPosition(positionName: positions.fromPosition)
+                toPosition = board.getPosition(positionName: positions.toPosition)
             }
-        }
-        if currentPlayer == firstPlayer {
-            firstPlayer.increasePlayedTokens()
-        } else {
-            secondPlayer.increasePlayedTokens()
+            fromPosition?.setTokenColor(tokenColor: TokenColor.empty)
+            toPosition?.setTokenColor(tokenColor: currentPlayer.getToken())
+            
+            board.updatePositionTokenColor(position: fromPosition!)
+            board.updatePositionTokenColor(position: toPosition!)
+            board.printBoard()
         }
         
         return board.getPosition(positionName: positions.toPosition)!
@@ -197,12 +209,12 @@ class Game {
     
     func playGame() {
         board.printBoard()
-        while firstPlayer.getPlayedTokens() < 9 && secondPlayer.getPlayedTokens() < 9 {
+        while firstPlayer.getPlayedTokens() + secondPlayer.getPoints() < 9 || secondPlayer.getPlayedTokens() + firstPlayer.getPoints() < 9 {
             let currentPosition = putToken()
             play(position: currentPosition)
         }
         while firstPlayer.getPlayedTokens() >= 3 && secondPlayer.getPlayedTokens() >= 3 {
-           let currentPosition = moveTokenOnBoard()
+            let currentPosition = moveTokenOnBoard()
             play(position: currentPosition)
         }
         printGameResult()
