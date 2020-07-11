@@ -1,5 +1,5 @@
-class Positions {
-    var namesOfPositions: [String: Position]
+struct ValidPositions {
+    private var namesOfPositions: [String: Position]
     
     init(){
         namesOfPositions = [String: Position]()

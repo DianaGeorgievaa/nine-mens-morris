@@ -1,8 +1,8 @@
 struct NineMensMorrisCombinations {
-    var combinations: [Position: [[Position]]]
+    private var combinations: [Position: [[Position]]]
     
     init() {
-        let positions = Positions()
+        let positions = ValidPositions()
         let namesOfPositions = positions.getPositions()
         combinations = [Position: [[Position]]]()
         combinations[namesOfPositions["A1"]!] = [[namesOfPositions["D1"]!, namesOfPositions["G1"]!], [namesOfPositions["A4"]!, namesOfPositions["A7"]!]]

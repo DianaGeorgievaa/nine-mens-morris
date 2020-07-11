@@ -1,15 +1,15 @@
 class Board {
     private var currentGamePositions: [Position]
-    private var positions: Positions
+    private var validPositions: ValidPositions
     private var positionsWithNames: [String: Position]
     
-    init(){
-        positions = Positions()
-        positionsWithNames = positions.getPositions()
+    init() {
+        validPositions = ValidPositions()
+        positionsWithNames = validPositions.getPositions()
         currentGamePositions = Array(positionsWithNames.values)
     }
     
-    func getPosition(positionName: String) -> Position? {
+    func getPositionByName(positionName: String) -> Position? {
         let position = positionsWithNames[positionName]
         for p in currentGamePositions {
             if p == position  {
@@ -19,38 +19,23 @@ class Board {
         return nil
     }
     
-    func updatePositionTokenColor(position: Position){
-        let positionIndex = currentGamePositions.firstIndex(of: position)!
-        currentGamePositions[positionIndex].setTokenColor(tokenColor: position.getTokenColor())
-    }
-    
     func getPositions() -> [Position] {
         return currentGamePositions
     }
     
-    func getTokenSymbol(position: String) -> String {
-        let position = getPosition(positionName: position)
-        let positionTokenColor = position!.getTokenColor()
-        switch positionTokenColor {
-        case TokenColor.white:
-            return "○"
-        case TokenColor.black:
-            return "●"
-        case TokenColor.empty:
-            return "x"
-        }
-        
-    }
-    
-    func getNumberOfPlayerTokensOnBoard(player: Player) -> Int {
+    func getNumberOfPlayerTokensOnBoard(player: RealPlayer) -> Int {
         var numberOfTokens = 0
         for position in currentGamePositions {
             if position.getTokenColor() == player.getToken() {
                 numberOfTokens += 1
             }
         }
-        
         return numberOfTokens
+    }
+    
+    func updatePositionTokenColor(position: Position) {
+        let positionIndex = currentGamePositions.firstIndex(of: position)!
+        currentGamePositions[positionIndex].setTokenColor(tokenColor: position.getTokenColor())
     }
     
     func printBoard() {
@@ -69,5 +54,10 @@ class Board {
         print("   |           |           |")
         print("7  \(getTokenSymbol(position: "A7"))-----------\(getTokenSymbol(position: "D7"))-----------\(getTokenSymbol(position: "G7"))")
     }
+    
+    internal func getTokenSymbol(position: String) -> String {
+        let position = getPositionByName(positionName: position)
+        let positionTokenColor = position!.getTokenColor()
+        return positionTokenColor.description
+    }
 }
-

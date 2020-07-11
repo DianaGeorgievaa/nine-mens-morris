@@ -1,12 +1,10 @@
-class Position: Hashable, Equatable {
+class Position {
     private var coordinate: Coordinate
     private var tokenColor: TokenColor
-    // private var neighboursCoordinates: [Coordinate]
     
     init(coordinate: Coordinate){
         self.coordinate = coordinate
         self.tokenColor = TokenColor.empty
-        // self.neighboursCoordinates = [Coordinate]()
     }
     
     func getTokenColor() -> TokenColor {
@@ -16,13 +14,16 @@ class Position: Hashable, Equatable {
     func setTokenColor(tokenColor: TokenColor) {
         self.tokenColor = tokenColor
     }
-    
+}
+
+extension Position: Equatable {
     static func == (lhs: Position, rhs: Position) -> Bool {
         return lhs.coordinate == rhs.coordinate
     }
-    
+}
+
+extension Position: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(coordinate)
     }
-    
 }

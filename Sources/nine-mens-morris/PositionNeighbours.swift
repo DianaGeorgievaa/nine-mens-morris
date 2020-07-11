@@ -1,8 +1,8 @@
 struct PositionNeighbours {
-    var neighbours: [Position: [Position]]
+    private var neighbours: [Position: [Position]]
     
     init() {
-        let positions = Positions()
+        let positions = ValidPositions()
         let namesOfPositions = positions.getPositions()
         neighbours = [Position: [Position]]()
         neighbours[namesOfPositions["A1"]!] = [namesOfPositions["A4"]!, namesOfPositions["D1"]!]
@@ -35,3 +35,4 @@ struct PositionNeighbours {
         return neighbours
     }
 }
+

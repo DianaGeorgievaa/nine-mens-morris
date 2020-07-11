@@ -3,10 +3,10 @@ class InputHandler {
         var playerName = ""
         var isValidName = true
         while isValidName {
-            print("Enter your name: ")
+            print(InputMessages.inputNameMessage.description)
             playerName = readLine()!
             if(playerName.count <= 1){
-                print("Please enter valid name")
+                print(InputMessages.validNameMessage.description)
             } else {
                 isValidName=false
             }
@@ -15,21 +15,21 @@ class InputHandler {
     }
     
     func readPutPosition(playerName: String) -> String {
-        print("\(playerName), choose move position: ")
+        print(InputMessages.inputPutPossition(playerName: playerName).description)
         let position = readLine()!
         return position
     }
     
     func readRemovePosition(playerName: String) -> String {
-        print("\(playerName), choose opponent's token to remove: ")
+        print(InputMessages.inputRemovePossition(playerName: playerName).description)
         let position = readLine()!
         return position
     }
     
-    func readMovePosition(playerName: String) -> (fromPosition: String, toPosition: String) {
-        print("\(playerName), choose which token to move: ")
+    func readMovePositions(playerName: String) -> (fromPosition: String, toPosition: String) {
+        print(InputMessages.inputFirstMovePossition(playerName: playerName).description)
         let fromPosition = readLine()!
-        print("\(playerName), choose where to move: ")
+        print(InputMessages.inputSecondMovePossition(playerName: playerName).description)
         let toPosition = readLine()!
         return (fromPosition, toPosition)
     }
