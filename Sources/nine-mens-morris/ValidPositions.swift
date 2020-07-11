@@ -29,7 +29,8 @@ struct ValidPositions {
         namesOfPositions["E4"] = Position(coordinate: Coordinate(row: 4, column: "E"))
         namesOfPositions["E5"] = Position(coordinate: Coordinate(row: 5, column: "E"))
     }
-    
+
+    /// Returns the valid game positions with their names
     func getPositions() -> [String: Position] {
         return namesOfPositions
     }

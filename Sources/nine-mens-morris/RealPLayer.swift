@@ -27,6 +27,7 @@ class RealPlayer: Player {
         return points
     }
     
+    /// Prints the name and the points of the player
     func printDetails(){
         print("Player: \(name) \n" + "Points: \(points)")
     }
@@ -35,10 +36,12 @@ class RealPlayer: Player {
         points+=1
     }
     
+    /// Increases the played tokens by 1
     func increasePlayedTokens() {
         playedTokens+=1
     }
     
+    /// Decreases the played tokens by 1
     func decresePlayedTokens() {
         playedTokens-=1
     }

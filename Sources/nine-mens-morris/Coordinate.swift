@@ -1,3 +1,4 @@
+/// Represents where one token is placed on the game's board
 struct Coordinate: Hashable {
     private var row: Int
     private var column: Character

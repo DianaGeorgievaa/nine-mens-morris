@@ -1,3 +1,5 @@
+/// The protocol which should be implemented by every specific type of player
+/// The current version of the application has only one type of player - RealPlayer
 protocol Player {
     var name: String {get}
     var tokenColor: TokenColor {get}

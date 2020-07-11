@@ -1,6 +1,7 @@
 struct PositionNeighbours {
     private var neighbours: [Position: [Position]]
     
+    /// Initialize dictionary with the neighours for each game position
     init() {
         let positions = ValidPositions()
         let namesOfPositions = positions.getPositions()
@@ -31,6 +32,7 @@ struct PositionNeighbours {
         neighbours[namesOfPositions["E5"]!] = [namesOfPositions["D5"]!, namesOfPositions["E4"]!]
     }
     
+    /// Returns the game positions and their neighbours
     func getNeighbours() ->  [Position: [Position]] {
         return neighbours
     }

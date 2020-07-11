@@ -1,3 +1,5 @@
+// Represents position on the game's board
+// Each position has coordinate and token color
 class Position {
     private var coordinate: Coordinate
     private var tokenColor: TokenColor

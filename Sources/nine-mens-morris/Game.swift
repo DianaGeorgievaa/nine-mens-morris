@@ -22,6 +22,10 @@ class Game {
         currentPlayer = firstPlayer
     }
     
+    /// Represents the whole playing process. While the two players have more than 9 tokens, 
+    /// they put them one by one on the board. When all the tokens are played,
+    /// the players can move the tokens which are on the board. When one of the players is with less than 3 tokens,
+    /// the game ends and the result is printed on the console.
     func playGame() {
         board.printBoard()
         while firstPlayer.getPlayedTokens() + secondPlayer.getPoints() < 9 || secondPlayer.getPlayedTokens() + firstPlayer.getPoints() < 9 {
@@ -35,6 +39,10 @@ class Game {
         printGameResult()
     }
     
+    /// Puts a new token on the board if the choosen by the current player position is valid
+    /// and increases the current player's played tokens by 1.
+    ///
+    /// Returns: position - the board position where the token is put
     internal func putToken() -> Position {
         var position = inputhHandler.readPutPosition(playerName: currentPlayer.getName())
         while !rules.isValidPutOnBoardPosition(position: position, board: board) {
@@ -53,6 +61,7 @@ class Game {
         
         return chosenPosition!
     }
+    
     
     internal func play(position: Position) {
         if rules.checkForNineMensMorrisCombination(position: position, board: board) {
