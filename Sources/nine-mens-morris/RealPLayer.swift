@@ -11,27 +11,12 @@ class RealPlayer: Player {
         self.playedTokens=0
     }
     
-    func getName() -> String {
-        return name
-    }
-    
-    func getToken() -> TokenColor {
-        return tokenColor
-    }
-    
-    func getPlayedTokens() -> Int {
-        return playedTokens
-    }
-    
-    func getPoints() -> Int {
-        return points
-    }
-    
     /// Prints the name and the points of the player
     func printDetails(){
         print("Player: \(name) \n" + "Points: \(points)")
     }
     
+    /// Updates the player points
     func updatePoints() {
         points+=1
     }

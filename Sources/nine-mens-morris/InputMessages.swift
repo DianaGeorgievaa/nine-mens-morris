@@ -1,3 +1,4 @@
+/// Enum with the input messages
 enum InputMessages {
     case inputNameMessage
     case validNameMessage
@@ -23,3 +24,4 @@ enum InputMessages {
         }
     }
 }
+

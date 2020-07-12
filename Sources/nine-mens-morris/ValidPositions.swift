@@ -31,6 +31,7 @@ struct ValidPositions {
     }
 
     /// Returns the valid game positions with their names
+    /// - Returns: nameOfPositions - the valid game positions with their names
     func getPositions() -> [String: Position] {
         return namesOfPositions
     }

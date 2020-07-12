@@ -1,3 +1,4 @@
+/// Enum with the game messages
 enum GameMessages: CustomStringConvertible {
     case emptyPositionMessage
     case validPositionMessage

@@ -33,6 +33,7 @@ struct PositionNeighbours {
     }
     
     /// Returns the game positions and their neighbours
+    /// - Returns: neighbours
     func getNeighbours() ->  [Position: [Position]] {
         return neighbours
     }

@@ -33,6 +33,7 @@ struct NineMensMorrisCombinations {
     }
 
     /// Returns all possible nine mens morris combinations
+    /// - Returns: combinations
     func getCombinations() ->  [Position: [[Position]]] {
         return combinations
     }
